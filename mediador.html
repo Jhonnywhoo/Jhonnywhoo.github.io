@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo - Werewolf</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="img/mini-logo.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/8b0455432d.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="pai-mestre-jogo" class="container-tabela">
+        <div id="mestre-jogo">
+            <div class="grid">
+
+                <div class="nome-pessoa">
+                    <div class="espaco">
+                        <p>Passe o aparelho para: .</p>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        <div class="navegacao">
+            <a href="mediador.html"><button class="botao-conteudo">Continuar</button></a>
+        </div>
+    </div>
+
+    <script>
+        window.history.pushState(null, '', window.location.href);
+        window.history.pushState(null, '', window.location.href); 
+    
+        window.onpopstate = function() {
+            window.history.go(1);
+        };
+    
+        const jogadores = JSON.parse(localStorage.getItem('jogadores')) || [];
+        let posicaoAtual = parseInt(localStorage.getItem('posicaoAtual')) || 0;
+    
+        const exibirProximoJogador = () => {
+            if (jogadores.length > 0) {
+                const jogadorAtual = jogadores[posicaoAtual];
+                document.querySelector('.nome-pessoa p').textContent = `Passe o aparelho para: ${jogadorAtual}`;
+            } else {
+                document.querySelector('.nome-pessoa p').textContent = 'Nenhum jogador encontrado.';
+            }
+        };
+    
+        const proximoJogador = () => {
+            posicaoAtual = (posicaoAtual + 1) % jogadores.length;
+            localStorage.setItem('posicaoAtual', posicaoAtual);
+        };
+    
+        exibirProximoJogador();
+    
+        document.querySelector('.botao-conteudo').addEventListener('click', () => {
+            proximoJogador();
+            exibirProximoJogador();
+        });
+    </script>
+    
+    
+    
+    
+    
+    
+</body>
+</html>
