@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'prefeito': 'img/prefeito.png',
         'guarda-costas': 'img/guarda-costas.png',
         'detetive': 'img/detetive.png',
-        'portador do amuleto': 'img/portador-d0-amuleto.png',
+        'portador do amuleto': 'img/portador-do-amuleto.png',
         'vidente de aura': 'img/vidente-de-aura.png',
         'príncipe bonitão': 'img/principe-bonitao.png',
         'maçom': 'img/macom.png',
@@ -481,13 +481,29 @@ if (page === 'mediador') {
         const papelJogador = document.getElementById('papel-jogador');
         const imagemJogador = document.getElementById('imagem-jogador');
         const jogadores = JSON.parse(localStorage.getItem('jogadores')) || [];
-        let posicaoAtual = parseInt(localStorage.getItem('posicaoAtual')) || 0;
+        let posicaoAtual = JSON.parse(localStorage.getItem('posicaoAtual')) || 0;
         const resultadoSorteio = JSON.parse(localStorage.getItem('resultadoSorteio')) || [];
     
         const exibirJogadorModal = () => {
             const jogadorAtual = jogadores[posicaoAtual] || 'Nenhum jogador encontrado.';
             document.querySelector('.nome-pessoa .comando').textContent = `Passe o aparelho para: ${jogadorAtual}`;
         };
+
+        const proximoJogador = () => {
+            posicaoAtual = (posicaoAtual + 1) % jogadores.length;
+            localStorage.setItem('posicaoAtual', posicaoAtual);
+        };
+    
+        continuarBtnModal.addEventListener('click', () => {
+            
+            modal.style.display = 'none';
+    
+            setTimeout(() => {
+                atualizarJogadorInfo();
+                proximoJogador();
+            }, 500);
+            
+        });
     
         const atualizarJogadorInfo = () => {
             const jogadorAtual = jogadores[posicaoAtual];
@@ -502,29 +518,15 @@ if (page === 'mediador') {
             setTimeout(() => {
                 const imagemPapel = imagemPorPapel[papelAtual.toLowerCase()] || 'img/mestre.png';
                 imagemJogador.src = imagemPapel; 
+            
             }, 50); 
+            
         };
     
         exibirJogadorModal();
         
-    
-        const proximoJogador = () => {
-            posicaoAtual = (posicaoAtual + 1) % jogadores.length;
-            localStorage.setItem('posicaoAtual', posicaoAtual);
-            exibirJogadorModal();
-        };
-    
-        continuarBtnModal.addEventListener('click', () => {
-            
-            modal.style.display = 'none';
-    
-            setTimeout(() => {
-                atualizarJogadorInfo();
-            }, 500);
-        });
-
-        proximoJogador();
     }
+    
     
 
 
